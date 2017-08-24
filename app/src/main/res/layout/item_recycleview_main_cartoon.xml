@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:background="@color/colorAccent"
+    android:layout_marginStart="@dimen/activity_horizontal_margin"
+    android:layout_marginEnd="@dimen/activity_horizontal_margin"
+    android:orientation="vertical">
+    <ImageView
+        android:layout_gravity="center"
+        android:id="@+id/recycle_cartoon_avatar"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:scaleType="fitXY"
+        />
+    <TextView
+        android:id="@+id/recycle_cartoon_name"
+        android:gravity="center"
+        tools:text="name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+</LinearLayout>
