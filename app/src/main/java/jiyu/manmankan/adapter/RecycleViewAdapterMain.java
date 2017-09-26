@@ -9,6 +9,8 @@ import android.view.View;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.RequestOptions;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 
@@ -48,11 +50,13 @@ public class RecycleViewAdapterMain extends BaseQuickAdapter<CartoonType,BaseVie
         Log.i("tag", "convert: "+item.getAvatar().getUrl());
         Glide
                 .with(context)
-                .asGif()
                 .load(item.getAvatar().getUrl())
+//                .apply()
                 .into((ImageView) helper.getView(R.id.recycle_cartoon_avatar));
     }
 
 
-
+    RequestOptions requestOptions=new RequestOptions()
+            .diskCacheStrategy(DiskCacheStrategy.ALL);
+//            .
 }
