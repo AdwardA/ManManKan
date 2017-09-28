@@ -13,11 +13,13 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import jiyu.manmankan.adapter.RecycleViewAdapterContent;
 import jiyu.manmankan.entity.CartoonType;
-import jiyu.manmankan.entity.Hero;
+import jiyu.manmankan.entity.LocalCartoonType;
 import jiyu.manmankan.parser.HeroParser;
+import jiyu.manmankan.parser.IBaseParser;
+import jiyu.manmankan.parser.YaoWangParser;
 
 public class CartoonActivity extends AppCompatActivity {
-    List<Hero> list;
+    List<LocalCartoonType> list;
     @BindView(R.id.cartoon_name)TextView mName;
     @BindView(R.id.content_recyclerView) RecyclerView recyclerView;
     private ProgressDialog dialog;
@@ -37,7 +39,16 @@ public class CartoonActivity extends AppCompatActivity {
             case "我的英雄学院":
                 new HeroParser().getContent(new HeroParser.onHeroDataCallback() {
                     @Override
-                    public void getData( List<Hero> data) {
+                    public void getData( List<LocalCartoonType> data) {
+                        list=data;
+                        setAdapter();
+                    }
+                });
+                break;
+            case "食戟之灵":
+                new YaoWangParser().getContentChild(new IBaseParser.onContentCallBack() {
+                    @Override
+                    public void getContent(List<LocalCartoonType> data) {
                         list=data;
                         setAdapter();
                     }

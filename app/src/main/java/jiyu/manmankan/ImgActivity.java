@@ -9,7 +9,7 @@ import android.view.View;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import jiyu.manmankan.adapter.PageAdapterImg;
-import jiyu.manmankan.entity.Hero;
+import jiyu.manmankan.entity.LocalCartoonType;
 import jiyu.manmankan.parser.HeroParser;
 
 public class ImgActivity extends AppCompatActivity {
@@ -25,22 +25,28 @@ public class ImgActivity extends AppCompatActivity {
         setContentView(R.layout.activity_img);
         ButterKnife.bind(this);
         toolbar.setVisibility(View.GONE);
-        Hero hero = (Hero) getIntent().getSerializableExtra("data");
-        String contentAddress = hero.getAddrss();
-
-        new HeroParser().getImgAddress(contentAddress, new HeroParser.onHeroAddressCallback() {
-
-            @Override
-            public void getAddress(final String[] address) {
-                runOnUiThread(new Runnable() {
+        LocalCartoonType localCartoonType = (LocalCartoonType) getIntent().getSerializableExtra("data");
+        String contentAddress = localCartoonType.getAddrss();
+        String name=getIntent().getStringExtra("name");
+        switch (name){
+            case "我的英雄学院":
+                new HeroParser().getImgAddress(contentAddress, new HeroParser.onHeroAddressCallback() {
                     @Override
-                    public void run() {
-                        PageAdapterImg adapter=new PageAdapterImg(address,ImgActivity.this);
-                        imgViewPage.setAdapter(adapter);
+                    public void getAddress(final String[] address) {
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                PageAdapterImg adapter=new PageAdapterImg(address,ImgActivity.this);
+                                imgViewPage.setAdapter(adapter);
+                            }
+                        });
                     }
                 });
-            }
-        });
+                break;
+            case "食戟之灵":
+                break;
+        }
+
 
     }
 

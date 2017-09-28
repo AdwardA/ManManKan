@@ -9,63 +9,74 @@ import org.jsoup.select.Elements;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import jiyu.manmankan.entity.LocalCartoonType;
 
-
 /**
- * Created by z on 2017/8/17.
+ * Created by ti on 2017/9/27.
  */
 
-public class HeroParser {
-    private String uri="http://manhua.fzdm.com/131/";
-    private String urlContent;
-    private String[] urls;
-    private String[] imgUrls=new String[30];
-    private List<LocalCartoonType> data=new ArrayList<LocalCartoonType>();
+public abstract class IBaseParser {
+    String urlContent = "";
+    String[] urls = new String[30];
+    String[] imgUrls = new String[30];
+    List<LocalCartoonType> data=new ArrayList<LocalCartoonType>();
 
+    public abstract void getContentChild(onContentCallBack contentCallback);
     //爬取漫画章节
-    public void getContent(final onHeroDataCallback callback)  {
+    public void getContent(final String uri, final onContentCallBack contentCallBack) {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                Document doc= null;
+                Document doc = null;
                 try {
+                    //联网获取对应的网址的源码
                     doc = Jsoup.connect(uri).timeout(10000).get();
-                    assert doc!=null;
-                    Element content=doc.select("div.pure-g").last();
-//                    Log.i("tag", "run: ================="+content.html());
-                    Elements titles=content.select("li a");
-                    Log.i("tag", "run: =============titles:"+titles.size()+"==="+titles);
-                    for (int i = 0; i <titles.size() ; i++) {
-                        LocalCartoonType localCartoonType =new LocalCartoonType();
-                        String t=titles.get(i).attr("title");
-                        String address=titles.get(i).attr("href");
-                        //分割字符
-                        t=t.substring(t.indexOf("院")+1);
-                        if (t.contains("第")){
-                            t=t.substring(t.indexOf("第")+1,t.length());
-                        }
-//                        if (t.contains("话")){
-//                            t=t.substring(0,t.indexOf("话"));
-//                        }
-                        Log.i("tag", "run: ==========title:"+t);
-
-                        localCartoonType.setTitle(t);
-                        localCartoonType.setAddrss(uri+address);
-                        data.add(localCartoonType);
+                    assert doc != null;
+                    //提取漫画章节标题
+                    Elements titles = getContentTitles(doc);
+                    Log.i("tag", "run: =============titles:\n" + titles.size() + "===" + titles);
+                    //------对漫画标题进行处理和赋值
+                    for (int i = 0; i < titles.size(); i++) {
+                        LocalCartoonType cartoonType = new LocalCartoonType();
+                        String s=getContentTitleAddress(titles.get(i));
+                        String[] ss=s.split("-");
+                        cartoonType.setTitle(ss[0]);
+                        cartoonType.setAddrss(uri + ss[1]);
+                        data.add(cartoonType);
                     }
-                    callback.getData(data);
+                    contentCallBack.getContent(data);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
             }
         }).start();
     }
+    abstract Elements getContentTitles(Document doc);
 
-    public void getImgAddress( String url, final onHeroAddressCallback callback) {
-        urlContent=url;
+    abstract String getContentTitleAddress(Element title);
+
+    /**
+     * 用于处理标题和地址的属性为title和href的元素
+     * @param title
+     * @param url
+     * @return
+     */
+    protected Map<String,String> getNormalSolveTitleAndAddress(Element title, String url){
+        Map<String,String> map=new HashMap<>();
+        String t=title.attr("title");
+        String address=title.attr("href");
+        address=url+address;
+        map.put("title",t);
+        map.put("address",address);
+        return map;
+    }
+
+
+    public void getImgAddress(onAddressCallBack callBack) {
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -101,13 +112,18 @@ public class HeroParser {
                 callback.getAddress(urls);
             }
         }).start();
-
-
     }
-    public interface onHeroAddressCallback{
+
+
+
+    public interface onContentCallBack {
+        void getContent(List<LocalCartoonType> data);
+    }
+
+    public interface onAddressCallBack {
         void getAddress(String[] address);
     }
-    public interface onHeroDataCallback{
-        void getData(List<LocalCartoonType> data);
-    }
+
+
 }
+
