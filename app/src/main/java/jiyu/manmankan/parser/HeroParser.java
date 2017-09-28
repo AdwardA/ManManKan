@@ -11,7 +11,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import jiyu.manmankan.entity.Hero;
+import jiyu.manmankan.entity.LocalCartoonType;
 
 
 /**
@@ -23,7 +23,7 @@ public class HeroParser {
     private String urlContent;
     private String[] urls;
     private String[] imgUrls=new String[30];
-    private List<Hero> data=new ArrayList<Hero>();
+    private List<LocalCartoonType> data=new ArrayList<LocalCartoonType>();
 
     //爬取漫画章节
     public void getContent(final onHeroDataCallback callback)  {
@@ -39,7 +39,7 @@ public class HeroParser {
                     Elements titles=content.select("li a");
                     Log.i("tag", "run: =============titles:"+titles.size()+"==="+titles);
                     for (int i = 0; i <titles.size() ; i++) {
-                        Hero hero=new Hero();
+                        LocalCartoonType localCartoonType =new LocalCartoonType();
                         String t=titles.get(i).attr("title");
                         String address=titles.get(i).attr("href");
                         //分割字符
@@ -52,9 +52,9 @@ public class HeroParser {
 //                        }
                         Log.i("tag", "run: ==========title:"+t);
 
-                        hero.setTitle(t);
-                        hero.setAddrss(uri+address);
-                        data.add(hero);
+                        localCartoonType.setTitle(t);
+                        localCartoonType.setAddrss(uri+address);
+                        data.add(localCartoonType);
                     }
                     callback.getData(data);
                 } catch (IOException e) {
@@ -108,6 +108,6 @@ public class HeroParser {
         void getAddress(String[] address);
     }
     public interface onHeroDataCallback{
-        void getData(List<Hero> data);
+        void getData(List<LocalCartoonType> data);
     }
 }
