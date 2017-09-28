@@ -20,9 +20,8 @@ import jiyu.manmankan.entity.LocalCartoonType;
  */
 
 public abstract class IBaseParser {
-    String urlContent = "";
     String[] urls = new String[30];
-    String[] imgUrls = new String[30];
+    private String[] imgUrls = new String[100];
     List<LocalCartoonType> data=new ArrayList<LocalCartoonType>();
 
     public abstract void getContentChild(onContentCallBack contentCallback);
@@ -65,18 +64,24 @@ public abstract class IBaseParser {
      * @param url
      * @return
      */
-    protected Map<String,String> getNormalSolveTitleAndAddress(Element title, String url){
+    protected Map<String,String> getNormalSolveTitleAndAddress(Element title){
         Map<String,String> map=new HashMap<>();
         String t=title.attr("title");
         String address=title.attr("href");
-        address=url+address;
         map.put("title",t);
         map.put("address",address);
         return map;
     }
 
+    /**
+     * ===================================================================================================================================================
+     * 在网页代码中寻找正确的图片地址
+     * @param urlContent
+     * @param callBack
+     */
+    abstract void getImgAddressChild(String urlContent,onAddressCallBack callBack);
 
-    public void getImgAddress(onAddressCallBack callBack) {
+    public void getImgAddress(final String urlContent, final onAddressCallBack callBack) {
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -86,18 +91,7 @@ public abstract class IBaseParser {
                 while (isContinue){
                     try {
                         doc = Jsoup.connect(urlContent + "index_" + i + ".html").timeout(10000).get();
-                        String content = doc.select("script[type*=text/javascript]").last().toString();
-//                    Log.i("tag", "getImgAdress: ========"+content);
-                        String[] contents = content.split("var");
-                        String address = "";
-                        for (String s : contents) {
-                            if (s.contains("mhurl = \"")) {
-                                String[] ss = s.split("\"");
-                                address = ss[1];
-                                break;
-                            }
-                        }
-                        imgUrls[i] = "http://p1.xiaoshidi.net/" + address;
+                        imgUrls[i] = findImgAddress(doc);
                         Log.i("tag", "getImgAdress======"+i+"====" + imgUrls[i]);
                         i=i+1;
                     } catch (IOException e) {
@@ -105,15 +99,15 @@ public abstract class IBaseParser {
                         e.printStackTrace();
                     }
                 }
+                //根据现有的图片数，对图片地址重新赋值
                 urls=new String[i];
-                for (int j = 0; j < i; j++) {
-                    urls[j]=imgUrls[j];
-                }
-                callback.getAddress(urls);
+                System.arraycopy(imgUrls, 0, urls, 0, i);
+                callBack.getAddress(urls);
             }
         }).start();
     }
 
+    abstract String findImgAddress(Document doc);
 
 
     public interface onContentCallBack {

@@ -23,13 +23,14 @@ public class CartoonActivity extends AppCompatActivity {
     @BindView(R.id.cartoon_name)TextView mName;
     @BindView(R.id.content_recyclerView) RecyclerView recyclerView;
     private ProgressDialog dialog;
+    private CartoonType cartoonType;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cartoon);
         ButterKnife.bind(this);
-        CartoonType cartoonType= (CartoonType) getIntent().getSerializableExtra("data");
+        cartoonType = (CartoonType) getIntent().getSerializableExtra("data");
         dialog = new ProgressDialog(this);
         dialog.setMessage("正在加载...");
         dialog.show();
@@ -65,7 +66,7 @@ public class CartoonActivity extends AppCompatActivity {
             @Override
             public void run() {
                 RecycleViewAdapterContent adpter=new RecycleViewAdapterContent(CartoonActivity.this,
-                        R.layout.item_recycleview_content,list);
+                        R.layout.item_recycleview_content,list,cartoonType.getName());
                 recyclerView.setAdapter(adpter);
                 recyclerView.setLayoutManager(new GridLayoutManager(CartoonActivity.this,5));
                 dialog.dismiss();

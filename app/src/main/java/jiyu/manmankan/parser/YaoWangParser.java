@@ -1,5 +1,7 @@
 package jiyu.manmankan.parser;
 
+import android.util.Log;
+
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
@@ -26,10 +28,21 @@ public class YaoWangParser extends IBaseParser {
 
     @Override
     String getContentTitleAddress(Element title) {
-        Map<String,String> map=super.getNormalSolveTitleAndAddress(title,url);
+        Map<String,String> map=super.getNormalSolveTitleAndAddress(title);
         String t=map.get("title");
         t=t.substring(t.indexOf("灵")+1);
         String address=map.get("address");
         return t+"-"+address;
+    }
+
+    @Override
+    public void getImgAddressChild(String urlContent, onAddressCallBack callBack) {
+        super.getImgAddress(urlContent,callBack);
+    }
+
+    @Override
+    String findImgAddress(Document doc) {
+        Element content=doc.select("div[id*=mhimg0]").last();
+        return content+"";
     }
 }
