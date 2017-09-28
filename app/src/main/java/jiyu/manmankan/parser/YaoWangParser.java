@@ -42,7 +42,16 @@ public class YaoWangParser extends IBaseParser {
 
     @Override
     String findImgAddress(Document doc) {
-        Element content=doc.select("div[id*=mhimg0]").last();
-        return content+"";
+        String content= String.valueOf(doc.select("script[type*=text/javascript]").last());
+        String[] contents = content.split("var");
+        String address = "";
+        for (String s : contents) {
+            if (s.contains("mhurl = \"")) {
+                String[] ss = s.split("\"");
+                address ="http://p1.xiaoshidi.net/"+ ss[1];
+                break;
+            }
+        }
+        return address;
     }
 }

@@ -20,7 +20,6 @@ import jiyu.manmankan.entity.LocalCartoonType;
  */
 
 public abstract class IBaseParser {
-    String[] urls = new String[30];
     private String[] imgUrls = new String[100];
     List<LocalCartoonType> data=new ArrayList<LocalCartoonType>();
 
@@ -61,7 +60,6 @@ public abstract class IBaseParser {
     /**
      * 用于处理标题和地址的属性为title和href的元素
      * @param title
-     * @param url
      * @return
      */
     protected Map<String,String> getNormalSolveTitleAndAddress(Element title){
@@ -90,7 +88,8 @@ public abstract class IBaseParser {
                 Document doc= null;
                 while (isContinue){
                     try {
-                        doc = Jsoup.connect(urlContent + "index_" + i + ".html").timeout(10000).get();
+                        doc = Jsoup.connect(urlContent + "index_" + i + ".html").timeout(20*1000).get();
+                        assert doc!=null;
                         imgUrls[i] = findImgAddress(doc);
                         Log.i("tag", "getImgAdress======"+i+"====" + imgUrls[i]);
                         i=i+1;
@@ -100,7 +99,8 @@ public abstract class IBaseParser {
                     }
                 }
                 //根据现有的图片数，对图片地址重新赋值
-                urls=new String[i];
+                i=i-1;
+                String[] urls=new String[i];
                 System.arraycopy(imgUrls, 0, urls, 0, i);
                 callBack.getAddress(urls);
             }

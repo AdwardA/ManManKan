@@ -74,7 +74,7 @@ public class HeroParser {
                 Document doc= null;
                 while (isContinue){
                     try {
-                        doc = Jsoup.connect(urlContent + "index_" + i + ".html").timeout(10000).get();
+                        doc = Jsoup.connect(urlContent + "index_" + i + ".html").timeout(30*1000).get();
                         String content = doc.select("script[type*=text/javascript]").last().toString();
 //                    Log.i("tag", "getImgAdress: ========"+content);
                         String[] contents = content.split("var");
