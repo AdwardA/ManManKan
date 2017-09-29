@@ -14,9 +14,8 @@ import butterknife.ButterKnife;
 import jiyu.manmankan.adapter.RecycleViewAdapterContent;
 import jiyu.manmankan.entity.CartoonType;
 import jiyu.manmankan.entity.LocalCartoonType;
-import jiyu.manmankan.parser.HeroParser;
 import jiyu.manmankan.parser.IBaseParser;
-import jiyu.manmankan.parser.YaoWangParser;
+import jiyu.manmankan.parser.ManManKanParser;
 
 public class CartoonActivity extends AppCompatActivity {
     List<LocalCartoonType> list;
@@ -36,37 +35,23 @@ public class CartoonActivity extends AppCompatActivity {
         dialog.show();
 
         mName.setText(cartoonType.getName());
-        switch (cartoonType.getName()){
-            case "我的英雄学院":
-                new HeroParser().getContent(new HeroParser.onHeroDataCallback() {
-                    @Override
-                    public void getData( List<LocalCartoonType> data) {
-                        list=data;
-                        setAdapter();
-                    }
-                });
-                break;
-            case "食戟之灵":
-                new YaoWangParser().getContentChild(new IBaseParser.onContentCallBack() {
+
+        ManManKanParser.builder()
+                .setCartoonType(cartoonType)
+                .getContent(new IBaseParser.onContentCallBack() {
                     @Override
                     public void getContent(List<LocalCartoonType> data) {
                         list=data;
                         setAdapter();
                     }
                 });
-                break;
-            default:
-                dialog.dismiss();
-                break;
-        }
-
     }
     private void setAdapter(){
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
                 RecycleViewAdapterContent adpter=new RecycleViewAdapterContent(CartoonActivity.this,
-                        R.layout.item_recycleview_content,list,cartoonType.getName());
+                        R.layout.item_recycleview_content,list,cartoonType);
                 recyclerView.setAdapter(adpter);
                 recyclerView.setLayoutManager(new GridLayoutManager(CartoonActivity.this,5));
                 dialog.dismiss();

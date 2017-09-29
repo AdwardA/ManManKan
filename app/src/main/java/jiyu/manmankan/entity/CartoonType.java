@@ -10,6 +10,24 @@ import cn.bmob.v3.datatype.BmobFile;
 public class CartoonType extends BmobObject {
     private String name;
     private BmobFile avatar;
+    private String origin;
+    private String address;
+
+    public String getOrigin() {
+        return origin;
+    }
+
+    public void setOrigin(String origin) {
+        this.origin = origin;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
 
     public BmobFile getAvatar() {
         return avatar;

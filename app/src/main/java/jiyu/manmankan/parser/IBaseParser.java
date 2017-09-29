@@ -22,36 +22,42 @@ import jiyu.manmankan.entity.LocalCartoonType;
 public abstract class IBaseParser {
     private String[] imgUrls = new String[100];
     List<LocalCartoonType> data=new ArrayList<LocalCartoonType>();
+    private Thread contentThread;
 
-    public abstract void getContentChild(onContentCallBack contentCallback);
+    //    public abstract void getContentChild(onContentCallBack contentCallback);
     //爬取漫画章节
     public void getContent(final String uri, final onContentCallBack contentCallBack) {
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                Document doc = null;
-                try {
-                    //联网获取对应的网址的源码
-                    doc = Jsoup.connect(uri).timeout(10000).get();
-                    assert doc != null;
-                    //提取漫画章节标题
-                    Elements titles = getContentTitles(doc);
-                    Log.i("tag", "run: =============titles:\n" + titles.size() + "===" + titles);
-                    //------对漫画标题进行处理和赋值
-                    for (int i = 0; i < titles.size(); i++) {
-                        LocalCartoonType cartoonType = new LocalCartoonType();
-                        String s=getContentTitleAddress(titles.get(i));
-                        String[] ss=s.split("-");
-                        cartoonType.setTitle(ss[0]);
-                        cartoonType.setAddrss(uri + ss[1]);
-                        data.add(cartoonType);
-                    }
-                    contentCallBack.getContent(data);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-        }).start();
+        //联网获取对应的网址的源码
+        //提取漫画章节标题
+        //------对漫画标题进行处理和赋值
+        contentThread = new Thread(new Runnable() {
+             @Override
+             public void run() {
+                 Document doc = null;
+                 try {
+                     //联网获取对应的网址的源码
+                     doc = Jsoup.connect(uri).timeout(10000).get();
+                     assert doc != null;
+                     //提取漫画章节标题
+                     Elements titles = getContentTitles(doc);
+                     data.clear();
+                     Log.i("tag", "run: =============titles:\n" + titles.size() + "===" + titles);
+                     //------对漫画标题进行处理和赋值
+                     for (int i = 0; i < titles.size(); i++) {
+                         LocalCartoonType cartoonType = new LocalCartoonType();
+                         String s=getContentTitleAddress(titles.get(i));
+                         String[] ss=s.split("-");
+                         cartoonType.setTitle(ss[0]);
+                         cartoonType.setAddrss(uri + ss[1]);
+                         data.add(cartoonType);
+                     }
+                     contentCallBack.getContent(data);
+                 } catch (IOException e) {
+                     e.printStackTrace();
+                 }
+             }
+         });
+        contentThread.start();
     }
     abstract Elements getContentTitles(Document doc);
 
@@ -77,7 +83,7 @@ public abstract class IBaseParser {
      * @param urlContent
      * @param callBack
      */
-    abstract void getImgAddressChild(String urlContent,onAddressCallBack callBack);
+//    abstract void getImgAddressChild(String urlContent,onAddressCallBack callBack);
 
     public void getImgAddress(final String urlContent, final onAddressCallBack callBack) {
         new Thread(new Runnable() {
@@ -106,7 +112,19 @@ public abstract class IBaseParser {
             }
         }).start();
     }
-
+    protected String findImgAddressFengZhiDongMan(Document doc){
+        String content= String.valueOf(doc.select("script[type*=text/javascript]").last());
+        String[] contents = content.split("var");
+        String address = "";
+        for (String s : contents) {
+            if (s.contains("mhurl = \"")) {
+                String[] ss = s.split("\"");
+                address ="http://p1.xiaoshidi.net/"+ ss[1];
+                break;
+            }
+        }
+        return address;
+    }
     abstract String findImgAddress(Document doc);
 
 
@@ -118,6 +136,10 @@ public abstract class IBaseParser {
         void getAddress(String[] address);
     }
 
+
+    public Thread getContentThread() {
+        return contentThread;
+    }
 
 }
 

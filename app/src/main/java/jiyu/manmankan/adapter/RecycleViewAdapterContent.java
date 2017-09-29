@@ -13,6 +13,7 @@ import java.util.List;
 
 import jiyu.manmankan.ImgActivity;
 import jiyu.manmankan.R;
+import jiyu.manmankan.entity.CartoonType;
 import jiyu.manmankan.entity.LocalCartoonType;
 
 /**
@@ -21,7 +22,7 @@ import jiyu.manmankan.entity.LocalCartoonType;
 
 public class RecycleViewAdapterContent extends BaseQuickAdapter<LocalCartoonType,BaseViewHolder> {
 
-    public RecycleViewAdapterContent(final Context context, @LayoutRes int layoutResId, @Nullable final List<LocalCartoonType> data, final String name) {
+    public RecycleViewAdapterContent(final Context context, @LayoutRes int layoutResId, @Nullable final List<LocalCartoonType> data, final CartoonType cartoonType) {
         super(layoutResId, data);
         this.setOnItemClickListener(new OnItemClickListener() {
             @Override
@@ -29,7 +30,7 @@ public class RecycleViewAdapterContent extends BaseQuickAdapter<LocalCartoonType
                 Intent intent=new Intent(context, ImgActivity.class);
                 assert data != null;
                 intent.putExtra("data",data.get(position));
-                intent.putExtra("name",name);
+                intent.putExtra("cartoonType",cartoonType);
                 context.startActivity(intent);
             }
         });

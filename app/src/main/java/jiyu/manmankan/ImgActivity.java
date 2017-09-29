@@ -11,9 +11,11 @@ import android.view.View;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import jiyu.manmankan.adapter.PageAdapterImg;
+import jiyu.manmankan.entity.CartoonType;
 import jiyu.manmankan.entity.LocalCartoonType;
 import jiyu.manmankan.parser.HeroParser;
 import jiyu.manmankan.parser.IBaseParser;
+import jiyu.manmankan.parser.ManManKanParser;
 import jiyu.manmankan.parser.YaoWangParser;
 
 public class ImgActivity extends AppCompatActivity {
@@ -33,12 +35,12 @@ public class ImgActivity extends AppCompatActivity {
         toolbar.setVisibility(View.GONE);
         LocalCartoonType localCartoonType = (LocalCartoonType) getIntent().getSerializableExtra("data");
         String contentAddress = localCartoonType.getAddrss();
-        String name=getIntent().getStringExtra("name");
+        CartoonType cartoonType= (CartoonType) getIntent().getSerializableExtra("cartoonType");
         Log.i("tag", "onCreate: ===="+contentAddress);
-        switch (name){
 
-            case "我的英雄学院":
-                new HeroParser().getImgAddress(contentAddress, new HeroParser.onHeroAddressCallback() {
+        ManManKanParser.builder()
+                .setCartoonType(cartoonType)
+                .getImgAddress(contentAddress, new IBaseParser.onAddressCallBack() {
                     @Override
                     public void getAddress(final String[] address) {
                         runOnUiThread(new Runnable() {
@@ -50,24 +52,6 @@ public class ImgActivity extends AppCompatActivity {
                         });
                     }
                 });
-                break;
-            case "食戟之灵":
-                new YaoWangParser().getImgAddressChild(contentAddress, new IBaseParser.onAddressCallBack() {
-                    @Override
-                    public void getAddress(final String[] address) {
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                PageAdapterImg adapter=new PageAdapterImg(address,ImgActivity.this);
-                                imgViewPage.setAdapter(adapter);
-                            }
-                        });
-                    }
-                });
-                break;
-        }
-
-
     }
 
 }
