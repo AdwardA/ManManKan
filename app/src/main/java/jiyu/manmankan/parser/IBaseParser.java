@@ -105,7 +105,7 @@ public abstract class IBaseParser {
                     }
                 }
                 //根据现有的图片数，对图片地址重新赋值
-                i=i-1;
+//                i=i-1;
                 String[] urls=new String[i];
                 System.arraycopy(imgUrls, 0, urls, 0, i);
                 callBack.getAddress(urls);
