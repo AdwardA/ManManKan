@@ -7,8 +7,8 @@ android {
         applicationId "jiyu.manmankan"
         minSdkVersion 21
         targetSdkVersion 26
-        versionCode 1
-        versionName "1.0"
+        versionCode getSelfDefinedVersion("code")
+        versionName getSelfDefinedVersion("name")
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
@@ -31,7 +31,7 @@ dependencies {
     compile 'com.android.support:support-v4:26.+'
     compile 'com.android.support:design:26.+'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
-    compile 'cn.bmob.android:bmob-sdk:3.5.5'
+    compile 'cn.bmob.android:bmob-sdk:3.5.7'
     compile 'cn.bmob.android:bmob-push:0.8'
     compile 'cn.bmob.android:bmob-im:2.0.5@aar'
     compile 'cn.bmob.android:bmob-sms:1.0.1'
@@ -41,3 +41,22 @@ dependencies {
     annotationProcessor 'com.github.bumptech.glide:compiler:4.0.0'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
 }
+
+static def getSelfDefinedVersion(type) {
+    int aa = 2
+    int bb = 0
+    Process process = "git rev-list --count HEAD".execute()
+    process.waitFor()
+    int cccc = process.getText().toInteger()
+
+    if ("code" == type) {
+        aa * 1000000 + bb * 10000 + cccc
+    } else if ("name" == type) {
+        String today = new Date().format("dd")
+        process = "git describe --always".execute()
+        process.waitFor()
+        String sha1 = process.getText().trim()
+        "$aa.$bb.$cccc"
+    }
+}
+

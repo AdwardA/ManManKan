@@ -31,6 +31,7 @@ import cn.bmob.v3.exception.BmobException;
 import cn.bmob.v3.listener.FindListener;
 import jiyu.manmankan.adapter.RecycleViewAdapterMain;
 import jiyu.manmankan.entity.CartoonType;
+import jiyu.manmankan.utils.BmobUpdateUtils;
 import jiyu.manmankan.utils.QQUtils;
 
 public class MainActivity extends AppCompatActivity
@@ -61,6 +62,7 @@ public class MainActivity extends AppCompatActivity
         qqUtils = new QQUtils(this);
         Bmob.initialize(this, "5af3d42c59b69857fd2e57c7bf5e7491");
         ButterKnife.bind(this);
+        new BmobUpdateUtils().update(this);
         setSupportActionBar(toolbar);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override

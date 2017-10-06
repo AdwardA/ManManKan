@@ -4,6 +4,7 @@ import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.widget.TextView;
 
@@ -53,7 +54,7 @@ public class CartoonActivity extends AppCompatActivity {
                 RecycleViewAdapterContent adpter=new RecycleViewAdapterContent(CartoonActivity.this,
                         R.layout.item_recycleview_content,list,cartoonType);
                 recyclerView.setAdapter(adpter);
-                recyclerView.setLayoutManager(new GridLayoutManager(CartoonActivity.this,5));
+                recyclerView.setLayoutManager(new LinearLayoutManager(CartoonActivity.this));
                 dialog.dismiss();
             }
         });
