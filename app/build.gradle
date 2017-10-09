@@ -10,6 +10,7 @@ android {
         versionCode getSelfDefinedVersion("code")
         versionName getSelfDefinedVersion("name")
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        multiDexEnabled true
     }
     buildTypes {
         release {
@@ -50,7 +51,7 @@ static def getSelfDefinedVersion(type) {
     int cccc = process.getText().toInteger()
 
     if ("code" == type) {
-        aa * 1000000 + bb * 10000 + cccc
+        cccc
     } else if ("name" == type) {
         String today = new Date().format("dd")
         process = "git describe --always".execute()
@@ -59,4 +60,6 @@ static def getSelfDefinedVersion(type) {
         "$aa.$bb.$cccc"
     }
 }
+
+
 
