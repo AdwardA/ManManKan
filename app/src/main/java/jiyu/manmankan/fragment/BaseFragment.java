@@ -1,6 +1,7 @@
 package jiyu.manmankan.fragment;
 
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -18,9 +19,16 @@ public abstract class BaseFragment extends Fragment {
 
     private View view;
     private Unbinder unbinder;
+    private Context context;
 
     public BaseFragment() {
         // Required empty public constructor
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        this.context=context;
     }
 
     @Override
@@ -53,6 +61,7 @@ public abstract class BaseFragment extends Fragment {
             activity.swipeRefreshLayout.setEnabled(false);
             return;
         }
+        activity.swipeRefreshLayout.setEnabled(true);
         activity.setOnRefreshListener(listener);
         activity.onRefresh();
     }

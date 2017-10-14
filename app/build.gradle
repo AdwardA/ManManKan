@@ -41,6 +41,7 @@ dependencies {
     testCompile 'junit:junit:4.12'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.0.0'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
+    compile project(':jiyu')
 }
 
 static def getSelfDefinedVersion(type) {

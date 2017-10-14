@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical">
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/download_recycle_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    </android.support.v7.widget.RecyclerView>
+
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/download_recycle_detail"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    </android.support.v7.widget.RecyclerView>
+
+    <include layout="@layout/page_no_data"/>
+
+    <!--储存信息-->
+    <FrameLayout
+        android:layout_gravity="bottom"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+       <jiyu.manmankan.component.StorageProgressBar
+           android:id="@+id/storageProgressBar"
+           android:layout_width="match_parent"
+           android:layout_height="20dp"
+           style="@style/Widget.AppCompat.ProgressBar.Horizontal"/>
+        <TextView
+            android:id="@+id/storage_text"
+            android:textColor="@android:color/white"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="主储存：32G /可用：12G"/>
+    </FrameLayout>
+</FrameLayout>

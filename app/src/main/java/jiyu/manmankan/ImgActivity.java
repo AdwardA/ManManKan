@@ -13,10 +13,8 @@ import butterknife.ButterKnife;
 import jiyu.manmankan.adapter.PageAdapterImg;
 import jiyu.manmankan.entity.CartoonType;
 import jiyu.manmankan.entity.LocalCartoonType;
-import jiyu.manmankan.parser.HeroParser;
 import jiyu.manmankan.parser.IBaseParser;
 import jiyu.manmankan.parser.ManManKanParser;
-import jiyu.manmankan.parser.YaoWangParser;
 
 public class ImgActivity extends AppCompatActivity {
 

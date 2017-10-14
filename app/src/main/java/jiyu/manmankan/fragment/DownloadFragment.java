@@ -3,6 +3,8 @@ package jiyu.manmankan.fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,10 +26,10 @@ public class DownloadFragment extends BaseFragment {
     @BindView(R.id.tab_layout)
     TabLayout tabLayout;
 
+    Fragment[] fragments=new Fragment[]{new DownloadedFragment(),new DownloadingFragment()};
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-
         return super.onCreateView(inflater, container, savedInstanceState);
     }
 
@@ -49,9 +51,22 @@ public class DownloadFragment extends BaseFragment {
 
     @Override
     protected void initData() {
-        tabLayout.addTab(tabLayout.newTab().setText("已下载"));
-        tabLayout.addTab(tabLayout.newTab().setText("下载中"));
-//        tabLayout.setupWithViewPager(viewPager,true);
+
+        viewPager.setAdapter(new FragmentPagerAdapter(getChildFragmentManager()) {
+            @Override
+            public Fragment getItem(int position) {
+                return fragments[position];
+            }
+
+            @Override
+            public int getCount() {
+                return fragments.length;
+            }
+        });
+        //会清除tab
+        tabLayout.setupWithViewPager(viewPager,true);
+        tabLayout.getTabAt(0).setText("已下载");
+        tabLayout.getTabAt(1).setText("下载中");
     }
 
     @Override
