@@ -12,14 +12,15 @@ import java.text.DecimalFormat;
  */
 
 public class FileUtils {
-    public static String  MAIN_NAME="manmankan";
-    public static String  PATH_DOWNLOAD=MAIN_NAME+"/ic_download";
+    public static String  JIYU_NAME="/mnt/sdcard/jiyu/";
+    public static String  MAIN_NAME=JIYU_NAME+"manmankan";
+    public static String  PATH_DOWNLOAD=MAIN_NAME+"/download";
     public static String  PATH_CACHE=MAIN_NAME+"/cache";
     public static String  PATH_CACHE_HEADER=PATH_CACHE+"/header";
     public static String  PATH_CACHE_CAETOONTYE=PATH_CACHE+"/cartoonType";
 
     public static void creatDirectityInSdcardJiyu(String pathName){
-        File file=new File("/mnt/sdcard/jiyu/"+pathName);
+        File file=new File(pathName);
         if (!file.exists()){
             file.mkdirs();
         }

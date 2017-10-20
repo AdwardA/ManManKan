@@ -1,6 +1,8 @@
 package jiyu.manmankan;
 
+import android.app.Instrumentation;
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
@@ -8,6 +10,7 @@ import android.support.v7.view.ActionMode;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -26,6 +29,7 @@ import jiyu.manmankan.entity.CartoonType;
 import jiyu.manmankan.entity.LocalCartoonType;
 import jiyu.manmankan.parser.IBaseParser;
 import jiyu.manmankan.parser.ManManKanParser;
+import jiyu.manmankan.service.DownloadService;
 
 public class CartoonActivity extends AppCompatActivity {
     List<LocalCartoonType> list;
@@ -138,5 +142,33 @@ public class CartoonActivity extends AppCompatActivity {
 
     @OnClick(R.id.fab)
     public void onViewClicked() {
+        Object[] oo=  downloadData.values().toArray();
+        LocalCartoonType[] dataCollection=new LocalCartoonType[downloadData.size()];
+        for (int i = 0; i <dataCollection.length; i++) {
+            dataCollection[i]= (LocalCartoonType) oo[i];
+        }
+        String[] titles=new String[dataCollection.length];
+        String[] contentUrls=new String[dataCollection.length];
+        for (int i = 0; i <dataCollection.length ; i++) {
+            titles[i]=dataCollection[i].getTitle();
+            contentUrls[i]=dataCollection[i].getAddrss();
+        }
+        Intent intent=new Intent(CartoonActivity.this, DownloadService.class);
+        intent.putExtra("title",titles);
+        intent.putExtra("url",contentUrls);
+        intent.putExtra("CartoonType",cartoonType);
+        startService(intent);
+
+        //模拟返回按键，但是不能在ui线程调用
+        new Thread () {
+            public void run () {
+                try {
+                    Instrumentation inst= new Instrumentation();
+                    inst.sendKeyDownUpSync(KeyEvent. KEYCODE_BACK);
+                } catch(Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }.start();
     }
 }

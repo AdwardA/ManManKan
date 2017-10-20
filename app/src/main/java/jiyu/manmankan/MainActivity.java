@@ -110,7 +110,6 @@ public class MainActivity extends AppCompatActivity
 
         } else if (id == R.id.nav_collect) {
 
-
         } else if (id == R.id.nav_download) {//下载管理
 
         } else if (id == R.id.nav_cache) {
