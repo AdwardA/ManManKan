@@ -1,8 +1,10 @@
 package jiyu.manmankan.component;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -25,9 +27,9 @@ public class StorageProgressBar extends ProgressBar {
 
     public StorageProgressBar(Context context, AttributeSet attrs) {
         super(context, attrs);
-        defaultColor=getResources().getColor(R.color.secondary_text);
+        defaultColor= Color.WHITE;
         TypedArray typedArray=context.obtainStyledAttributes(attrs,R.styleable.StorageProgressBar);
-        mFitColor=typedArray.getColor(R.styleable.StorageProgressBar_fitBackground,getResources().getColor(R.color.colorPrimary));
+        mFitColor=typedArray.getColor(R.styleable.StorageProgressBar_fitBackground,defaultColor);
         mUnFitColor=typedArray.getColor(R.styleable.StorageProgressBar_unfitBackground, defaultColor);
         typedArray.recycle();
     }

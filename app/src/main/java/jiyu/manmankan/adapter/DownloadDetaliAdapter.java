@@ -9,23 +9,21 @@ import com.chad.library.adapter.base.BaseViewHolder;
 
 import java.util.List;
 
+import jiyu.manmankan.entity.DownloadDetail;
+
 /**
  * Created by z on 2017/10/12.
  * O(∩_∩)~
  */
 
-public class DownloadDetaliAdapter extends BaseQuickAdapter {
-    public DownloadDetaliAdapter(@LayoutRes int layoutResId, @Nullable List data) {
-        super(layoutResId, data);
-    }
-
-    @Override
-    protected void convert(BaseViewHolder helper, Object item) {
-
-    }
-
-    @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-
-    }
-}
+//public class DownloadDetaliAdapter extends BaseQuickAdapter<DownloadDetail,BaseViewHolder> {
+////    public DownloadDetaliAdapter(@LayoutRes int layoutResId, @Nullable List data) {
+////        super(layoutResId, data);
+////    }
+////
+////
+////    @Override
+////    protected void convert(BaseViewHolder helper, DownloadDetail item) {
+////
+////    }
+//}

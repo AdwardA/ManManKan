@@ -1,7 +1,7 @@
 package jiyu.manmankan;
 
+import android.app.AlertDialog;
 import android.app.Instrumentation;
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -39,7 +39,7 @@ public class CartoonActivity extends AppCompatActivity {
     RecyclerView recyclerView;
     @BindView(R.id.fab)
     FloatingActionButton fab;
-    private ProgressDialog dialog;
+    private AlertDialog dialog;
     private CartoonType cartoonType;
     private RecycleViewAdapterContent adapter;
     private Map<Integer, LocalCartoonType> downloadData;
@@ -50,9 +50,9 @@ public class CartoonActivity extends AppCompatActivity {
         setContentView(R.layout.activity_cartoon);
         ButterKnife.bind(this);
         cartoonType = (CartoonType) getIntent().getSerializableExtra("data");
-        dialog = new ProgressDialog(this);
-        dialog.setMessage("正在加载...");
-        dialog.show();
+        AlertDialog.Builder d = new AlertDialog.Builder(this);
+        d.setMessage("正在加载...");
+        dialog=d.show();
 
         mName.setText(cartoonType.getName());
 

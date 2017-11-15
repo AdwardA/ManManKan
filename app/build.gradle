@@ -17,7 +17,16 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
+        debug{
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
     }
+    dexOptions {
+        jumboMode true
+        javaMaxHeapSize "4g"
+    }
+
 }
 
 dependencies {
