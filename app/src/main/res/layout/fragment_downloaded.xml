@@ -30,6 +30,8 @@
            android:id="@+id/storageProgressBar"
            android:layout_width="match_parent"
            android:layout_height="20dp"
+           app:fitBackground="@color/colorPrimaryDark"
+           app:unfitBackground="@android:color/darker_gray"
            style="@style/Widget.AppCompat.ProgressBar.Horizontal"/>
         <TextView
             android:id="@+id/storage_text"

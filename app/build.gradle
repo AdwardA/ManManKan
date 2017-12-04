@@ -1,5 +1,7 @@
 apply plugin: 'com.android.application'
 
+def dbflow_version = "4.1.2"
+
 android {
     compileSdkVersion 26
     buildToolsVersion '26.0.2'
@@ -32,27 +34,37 @@ android {
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
-        exclude group: 'com.android.support', module: 'support-annotations'
+        exclude group: 'com.android.support'//, module: 'support-annotations'
     })
     compile 'com.github.bumptech.glide:glide:4.0.0'
     compile 'com.jakewharton:butterknife:8.8.1'
     compile 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.22'
-    compile 'com.android.support:appcompat-v7:26.+'
-    compile 'com.android.support:support-v4:26.+'
-    compile 'com.android.support:design:26.+'
+    //noinspection GradleCompatible
+    compile 'com.android.support:appcompat-v7:26.0.0-alpha1'
+    compile 'com.android.support:support-v4:26.0.0-alpha1'
+    compile 'com.android.support:design:26.0.0-alpha1'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
-    compile 'cn.bmob.android:bmob-sdk:3.5.7'
-    compile 'cn.bmob.android:bmob-push:0.8'
-    compile 'cn.bmob.android:bmob-im:2.0.5@aar'
-    compile 'cn.bmob.android:bmob-sms:1.0.1'
-    compile 'cn.bmob.android:http-legacy:1.0'
-    compile 'com.squareup.retrofit2:retrofit:2.3.0'
+    compile ('cn.bmob.android:bmob-sdk:3.5.7',{
+        //exclude group: 'cn.bmob.android'
+    })
+    implementation ('com.squareup.retrofit2:retrofit:2.3.0',{
+        exclude group:'com.squareup.okio',module:'okio'
+    })
     compile 'org.jsoup:jsoup:1.10.3'
     testCompile 'junit:junit:4.12'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.0.0'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
-    compile project(':jiyu')
+
+    // RXJava2
+    implementation "com.github.Raizlabs.DBFlow:dbflow-rx2:${dbflow_version}"
+    annotationProcessor "com.github.Raizlabs.DBFlow:dbflow-processor:${dbflow_version}"
+    compile "com.github.Raizlabs.DBFlow:dbflow-core:${dbflow_version}"
+    compile "com.github.Raizlabs.DBFlow:dbflow:${dbflow_version}"
+    compile "com.github.Raizlabs.DBFlow:dbflow-sqlcipher:${dbflow_version}"
 }
+
+
+
 
 static def getSelfDefinedVersion(type) {
     int aa = 2

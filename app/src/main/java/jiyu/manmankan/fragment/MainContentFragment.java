@@ -65,6 +65,7 @@ public class MainContentFragment extends BaseFragment {
                     @Override
                     public void run() {
                         BmobQuery<CartoonType> query = new BmobQuery<CartoonType>();
+                        query.setCachePolicy(BmobQuery.CachePolicy.NETWORK_ELSE_CACHE);
                         query.findObjects(new FindListener<CartoonType>() {
                             @Override
                             public void done(List<CartoonType> list, BmobException e) {

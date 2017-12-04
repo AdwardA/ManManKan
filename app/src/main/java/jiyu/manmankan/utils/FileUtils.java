@@ -2,6 +2,7 @@ package jiyu.manmankan.utils;
 
 import android.os.Environment;
 import android.os.StatFs;
+import android.util.Log;
 
 import java.io.File;
 import java.io.IOException;
@@ -12,27 +13,31 @@ import java.text.DecimalFormat;
  */
 
 public class FileUtils {
-    public static String  JIYU_NAME="/mnt/sdcard/jiyu/";
+    private static String SD_PATH=Environment.getExternalStorageDirectory().getPath();
+    public static String  JIYU_NAME=SD_PATH+"/jiyu/";
     public static String  MAIN_NAME=JIYU_NAME+"manmankan";
     public static String  PATH_DOWNLOAD=MAIN_NAME+"/download";
     public static String  PATH_CACHE=MAIN_NAME+"/cache";
     public static String  PATH_CACHE_HEADER=PATH_CACHE+"/header";
     public static String  PATH_CACHE_CAETOONTYE=PATH_CACHE+"/cartoonType";
 
+    public FileUtils() {
+        if (SD_PATH.equals("")){
+            SD_PATH=Environment.getExternalStorageDirectory().getPath();
+        }
+    }
+
     public static void creatDirectityInSdcardJiyu(String pathName){
         File file=new File(pathName);
         if (!file.exists()){
-            file.mkdirs();
+            Log.i("tang", "creatDirectityInSdcardJiyu: 目录不存在==创建=="+file.mkdirs()
+            +"\npathName：====="+pathName);
         }
     }
 
     public static boolean setFoldersInit ()throws IOException{
         boolean b=false;
-        //创建。nomedia文件；
-        File nomedia=new File("/mnt/sdcard/jiyu/"+MAIN_NAME+"/.nomedia");
-        if (!nomedia.exists()){
-           b=nomedia.createNewFile();
-        }
+
         //创建缓存目录
         FileUtils.creatDirectityInSdcardJiyu(PATH_CACHE);
         //--创建header文件夹；
@@ -41,6 +46,12 @@ public class FileUtils {
         FileUtils.creatDirectityInSdcardJiyu(PATH_CACHE_CAETOONTYE);
         //创建漫画下载目录
         creatDirectityInSdcardJiyu(PATH_DOWNLOAD);
+
+        //创建。nomedia文件；
+        File nomedia=new File(JIYU_NAME+MAIN_NAME+"/.nomedia");
+        if (!nomedia.exists()){
+            b=nomedia.createNewFile();
+        }
         return b;
     }
 

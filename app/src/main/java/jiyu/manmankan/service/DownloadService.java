@@ -4,6 +4,14 @@ import android.app.Service;
 import android.content.Intent;
 import android.os.IBinder;
 
+import com.raizlabs.android.dbflow.rx2.language.RXSQLite;
+import com.raizlabs.android.dbflow.sql.language.SQLite;
+import com.raizlabs.android.dbflow.sql.queriable.ModelQueriable;
+
+import java.util.Date;
+
+import jiyu.manmankan.data.DBTDownload;
+import jiyu.manmankan.data.DBTDownload_Table;
 import jiyu.manmankan.entity.CartoonType;
 import jiyu.manmankan.parser.IBaseParser;
 import jiyu.manmankan.parser.ManManKanParser;
@@ -29,7 +37,7 @@ public class DownloadService extends Service {
     public int onStartCommand(Intent intent, int flags, int startId) {
         final String[] titles=intent.getStringArrayExtra("title");
         String[] contentUrls=intent.getStringArrayExtra("url");
-        CartoonType cartoonType= (CartoonType) intent.getSerializableExtra("CartoonType");
+        final CartoonType cartoonType= (CartoonType) intent.getSerializableExtra("CartoonType");
         ToastUtils.shortToast(this,"成功添加"+titles.length+"个下载任务");
         pathCartoon = FileUtils.PATH_DOWNLOAD+"/"+cartoonType.getName();
         FileUtils.creatDirectityInSdcardJiyu(pathCartoon);
@@ -41,9 +49,20 @@ public class DownloadService extends Service {
                     .getImgAddress(contentUrls[i], new IBaseParser.onAddressCallBack() {
                         @Override
                         public void getAddress(String[] address) {
+                            //把下载任务写入数据库
+                            DBTDownload dbtDownload= new DBTDownload(cartoonType.getName(),titles[finalI],address.length,address);
+                            DBTDownload dbtDownload1= SQLite.select()
+                                    .from(DBTDownload.class)
+                                    .where(DBTDownload_Table.contentName.eq(titles[finalI]))
+                                    .querySingle();
+                            if (dbtDownload1==null){
+                                dbtDownload.insert();
+                            }else {
+                                dbtDownload.update();
+                            }
+
                             //开始下载
-                            DownloadThread downloadThread=new DownloadThread(pathCartoon +"/"+titles[finalI],address);
-                            downloadThread.start();
+                            new DownloadThread(pathCartoon +"/",titles[finalI],address).start();
                         }
                     });
         }

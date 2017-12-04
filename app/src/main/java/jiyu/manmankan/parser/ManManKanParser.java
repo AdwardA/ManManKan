@@ -35,7 +35,7 @@ public  class ManManKanParser{
         List<LocalCartoonType> contentData;
 
         public void getContent(onContentCallBack callBack) {
-            super.getContent(cartoonType.getAddress(),callBack);
+            super.getContent(cartoonType,callBack);
         }
         public void getImgAddress(String urlContent,onAddressCallBack callBack){
             super.getImgAddress(urlContent,callBack);

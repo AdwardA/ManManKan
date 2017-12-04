@@ -12,14 +12,18 @@ import android.widget.CompoundButton;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.BaseViewHolder;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import jiyu.manmankan.ImgActivity;
 import jiyu.manmankan.R;
+import jiyu.manmankan.data.DBTDownload;
 import jiyu.manmankan.entity.CartoonType;
 import jiyu.manmankan.entity.LocalCartoonType;
+import jiyu.manmankan.utils.FileUtils;
+import rx.Observable;
 
 /**
  * Created by z on 2017/8/19.
@@ -77,6 +81,15 @@ public class RecycleViewAdapterContent extends BaseQuickAdapter<LocalCartoonType
             for (int i = 0; i <data.size() ; i++) {
                 downloadContentData.put(i,data.get(i));
             }
+        }
+
+        //判断是否下载
+        File file=new File(FileUtils.PATH_DOWNLOAD+"/"+item.getName()+"/"+item.getTitle());
+        if (file.exists()){
+            data.get(helper.getAdapterPosition()).setDownloaded(true);
+            helper.setText(R.id.content_recyclerView_text_state,"已下载");
+        }else {
+            helper.setText(R.id.content_recyclerView_text_state,"");
         }
     }
 

@@ -27,7 +27,7 @@ public class StorageProgressBar extends ProgressBar {
 
     public StorageProgressBar(Context context, AttributeSet attrs) {
         super(context, attrs);
-        defaultColor= Color.WHITE;
+        defaultColor= Color.GRAY;
         TypedArray typedArray=context.obtainStyledAttributes(attrs,R.styleable.StorageProgressBar);
         mFitColor=typedArray.getColor(R.styleable.StorageProgressBar_fitBackground,defaultColor);
         mUnFitColor=typedArray.getColor(R.styleable.StorageProgressBar_unfitBackground, defaultColor);

@@ -8,10 +8,10 @@ import cn.bmob.v3.datatype.BmobFile;
  */
 
 public class CartoonType extends BmobObject {
-    private String name;
-    private BmobFile avatar;
-    private String origin;
-    private String address;
+    private String name;//漫画名字
+    private BmobFile avatar;//漫画封面
+    private String origin;//漫画来源
+    private String address;//漫画目录地址
 
     public String getOrigin() {
         return origin;

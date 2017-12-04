@@ -13,6 +13,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import jiyu.manmankan.entity.CartoonType;
 import jiyu.manmankan.entity.LocalCartoonType;
 
 /**
@@ -26,7 +27,7 @@ public abstract class IBaseParser {
 
     //    public abstract void getContentChild(onContentCallBack contentCallback);
     //爬取漫画章节
-    public void getContent(final String uri, final onContentCallBack contentCallBack) {
+    public void getContent(final CartoonType cartoonType1, final onContentCallBack contentCallBack) {
         //联网获取对应的网址的源码
         //提取漫画章节标题
         //------对漫画标题进行处理和赋值
@@ -36,7 +37,7 @@ public abstract class IBaseParser {
                  Document doc = null;
                  try {
                      //联网获取对应的网址的源码
-                     doc = Jsoup.connect(uri).timeout(10000).get();
+                     doc = Jsoup.connect(cartoonType1.getAddress()).timeout(10000).get();
                      assert doc != null;
                      //提取漫画章节标题
                      Elements titles = getContentTitles(doc);
@@ -47,8 +48,9 @@ public abstract class IBaseParser {
                          LocalCartoonType cartoonType = new LocalCartoonType();
                          String s=getContentTitleAddress(titles.get(i));
                          String[] ss=s.split("-");
+                         cartoonType.setName(cartoonType1.getName());
                          cartoonType.setTitle(ss[0]);
-                         cartoonType.setAddrss(uri + ss[1]);
+                         cartoonType.setAddrss(cartoonType1.getAddress() + ss[1]);
                          data.add(cartoonType);
                      }
                      contentCallBack.getContent(data);

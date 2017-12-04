@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 
 import jiyu.manmankan.R;
@@ -42,6 +43,7 @@ public class PageAdapterImg extends PagerAdapter {
 
         Glide
                 .with(context)
+                .setDefaultRequestOptions(requestOptions)
                 .applyDefaultRequestOptions(requestOptions)
                 .load(urls[position])
                 .into(imageView);
@@ -69,5 +71,6 @@ public class PageAdapterImg extends PagerAdapter {
 
     RequestOptions requestOptions=new RequestOptions()
             .skipMemoryCache(true)
+            .diskCacheStrategy(DiskCacheStrategy.NONE)
             .fitCenter();
 }

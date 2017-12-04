@@ -16,8 +16,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
-import com.example.jiyu.actionMode.TopActionMode;
-
 import java.util.List;
 import java.util.Map;
 
@@ -25,6 +23,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import jiyu.manmankan.adapter.RecycleViewAdapterContent;
+import jiyu.manmankan.component.TopActionMode;
 import jiyu.manmankan.entity.CartoonType;
 import jiyu.manmankan.entity.LocalCartoonType;
 import jiyu.manmankan.parser.IBaseParser;
