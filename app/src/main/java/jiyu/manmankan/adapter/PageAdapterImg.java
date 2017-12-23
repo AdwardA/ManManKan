@@ -56,6 +56,7 @@ public class PageAdapterImg extends PagerAdapter {
     public void destroyItem(ViewGroup container, int position, Object object) {
         Log.i("tag", "destroyItem: ===destroyItem==="+position);
         container.removeView(views[position]);
+        views[position]=null;
 
     }
 
@@ -70,7 +71,6 @@ public class PageAdapterImg extends PagerAdapter {
     }
 
     RequestOptions requestOptions=new RequestOptions()
-            .skipMemoryCache(true)
             .diskCacheStrategy(DiskCacheStrategy.NONE)
             .fitCenter();
 }

@@ -1,6 +1,7 @@
 package jiyu.manmankan.service;
 
 import android.content.Context;
+import android.support.design.widget.Snackbar;
 import android.util.Log;
 
 import com.raizlabs.android.dbflow.sql.language.SQLite;
@@ -13,6 +14,7 @@ import java.io.InputStream;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Observable;
 
 import jiyu.manmankan.data.DBTDownload;
 import jiyu.manmankan.data.DBTDownload_Table;
@@ -25,6 +27,8 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.http.GET;
 import retrofit2.http.Url;
+import rx.Observer;
+import rx.android.schedulers.AndroidSchedulers;
 
 /**
  * Created by z on 2017/10/16.
@@ -40,7 +44,8 @@ public class DownloadThread extends Thread {
     private RetrofitResponseBody retrofitResponseBody;
 
 
-    public DownloadThread(String path,String title, String[] imgUrls){
+    public DownloadThread(Context context,String path,String title, String[] imgUrls){
+        this.context=context;
         savePath=path+title;
         FileUtils.creatDirectityInSdcardJiyu(savePath);
         Log.i("tag", "DownloadThread == DownloadThread: ==downloadPath=="+savePath);

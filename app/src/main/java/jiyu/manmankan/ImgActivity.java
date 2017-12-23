@@ -55,7 +55,6 @@ public class ImgActivity extends AppCompatActivity {
                         +localCartoonType.getTitle()+"/"
                         +i+".jpg";
             }
-            ToastUtils.longToast(this,"加载本地资源");
             PageAdapterImg adapter=new PageAdapterImg(address,ImgActivity.this);
             imgViewPage.setAdapter(adapter);
         }else {

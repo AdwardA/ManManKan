@@ -60,9 +60,8 @@ public class DownloadService extends Service {
                             }else {
                                 dbtDownload.update();
                             }
-
                             //开始下载
-                            new DownloadThread(pathCartoon +"/",titles[finalI],address).start();
+                            new DownloadThread(getApplicationContext(),pathCartoon +"/",titles[finalI],address).start();
                         }
                     });
         }

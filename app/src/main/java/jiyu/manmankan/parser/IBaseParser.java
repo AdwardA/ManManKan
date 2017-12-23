@@ -21,7 +21,6 @@ import jiyu.manmankan.entity.LocalCartoonType;
  */
 
 public abstract class IBaseParser {
-    private String[] imgUrls = new String[100];
     List<LocalCartoonType> data=new ArrayList<LocalCartoonType>();
     private Thread contentThread;
 
@@ -91,6 +90,7 @@ public abstract class IBaseParser {
         new Thread(new Runnable() {
             @Override
             public void run() {
+                String[] imgUrls = new String[500];
                 int i=0;
                 boolean isContinue=true;
                 Document doc= null;

@@ -1,5 +1,6 @@
 package jiyu.manmankan;
 
+import android.Manifest;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
@@ -15,6 +16,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+
+import com.tbruyelle.rxpermissions2.RxPermissions;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -37,13 +40,21 @@ public class MainActivity extends AppCompatActivity
     Toolbar toolbar;
     ImageView imageView;
     private QQUtils qqUtils;
-
+    String[] permissions=new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE};
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getWindow().setStatusBarColor(Color.TRANSPARENT);
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
         setContentView(R.layout.activity_main);
+        //申请权限
+        RxPermissions rxPermissions = new RxPermissions(this); // where this is an Activity instance
+        rxPermissions.request(permissions)
+                .subscribe(granted->{
+                    if (!granted){
+
+                    }
+                });
         //第一：默认初始化
         qqUtils = new QQUtils(this);
         Bmob.initialize(this, "5af3d42c59b69857fd2e57c7bf5e7491");
