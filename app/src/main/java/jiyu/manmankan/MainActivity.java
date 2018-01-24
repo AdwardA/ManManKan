@@ -1,6 +1,7 @@
 package jiyu.manmankan;
 
 import android.Manifest;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
@@ -16,15 +17,18 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.tbruyelle.rxpermissions2.RxPermissions;
+
+import org.json.JSONException;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import cn.bmob.v3.Bmob;
 import jiyu.manmankan.fragment.DownloadFragment;
 import jiyu.manmankan.fragment.MainContentFragment;
-import jiyu.manmankan.utils.BmobUpdateUtils;
 import jiyu.manmankan.utils.QQUtils;
 
 public class MainActivity extends AppCompatActivity
@@ -38,9 +42,11 @@ public class MainActivity extends AppCompatActivity
     public SwipeRefreshLayout swipeRefreshLayout;
     @BindView(R.id.toolbar)
     Toolbar toolbar;
-    ImageView imageView;
+    ImageView imgAvator;
     private QQUtils qqUtils;
     String[] permissions=new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE};
+    private TextView textUserName;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,7 +62,6 @@ public class MainActivity extends AppCompatActivity
                     }
                 });
         //第一：默认初始化
-        qqUtils = new QQUtils(this);
         Bmob.initialize(this, "5af3d42c59b69857fd2e57c7bf5e7491");
         ButterKnife.bind(this);
         setSupportActionBar(toolbar);
@@ -65,19 +70,28 @@ public class MainActivity extends AppCompatActivity
         toggle.syncState();
         navigationView.setNavigationItemSelectedListener(this);
         View view = navigationView.getHeaderView(0);
-        imageView=view.findViewById(R.id.imageView);
-        imageView.setOnClickListener(new View.OnClickListener() {
+        imgAvator=view.findViewById(R.id.imageView);
+        imgAvator.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 qqUtils.login();
             }
         });
+        textUserName = view.findViewById(R.id.user_name);
         setFragment(0);
 //        swipeRefreshLayout.setRefreshing(true);
         swipeRefreshLayout.setOnRefreshListener(this);
-        new BmobUpdateUtils().update(this);
+        //登录
+        qqUtils = new QQUtils(this);
+        qqUtils.getUserInfo();
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        qqUtils.setActivityResult(requestCode,resultCode,data);
+        Log.i("tag", "onActivityResult:====requestCode="+requestCode+"=resultCode="+resultCode);
+        super.onActivityResult(requestCode, resultCode, data);
+    }
 
     @Override
     public void onBackPressed() {
@@ -155,6 +169,13 @@ public class MainActivity extends AppCompatActivity
     }
 
 
+    public void setUserInfo(String avatorUrl,String nickname){
+        Glide.with(this)
+                .asBitmap()
+                .load(avatorUrl)
+                .into(imgAvator);
+        textUserName.setText(nickname);
+    }
     @Override
     public void onRefresh() {
         Log.i("tag", "onRefresh: ...");

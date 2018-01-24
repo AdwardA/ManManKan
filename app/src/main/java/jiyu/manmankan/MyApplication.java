@@ -7,6 +7,7 @@ import com.raizlabs.android.dbflow.config.DatabaseConfig;
 import com.raizlabs.android.dbflow.config.DatabaseDefinition;
 import com.raizlabs.android.dbflow.config.FlowManager;
 import com.raizlabs.android.dbflow.sql.language.SQLite;
+import com.tencent.bugly.Bugly;
 
 import java.io.IOException;
 import java.util.Date;
@@ -24,6 +25,7 @@ public class MyApplication extends android.app.Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        Bugly.init(this,"5d403b0c62",true);
         FlowManager.init(this);
         DatabaseDefinition db=FlowManager.getDatabase(DBManManKan.class);
         Log.i("tag", "onCreate: "+ db.getDatabaseFileName());

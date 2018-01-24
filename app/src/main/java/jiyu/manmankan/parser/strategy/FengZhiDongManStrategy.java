@@ -18,12 +18,18 @@ public class FengZhiDongManStrategy implements IBaseWebSiteStrategy {
     }
 
     @Override
-    public String getContentTitleAddress(Element title) {
+    public String getContentTitleAddress(String serverAddress,Element title) {
 //        Log.i("tag", "getContentTitleAddress: ====="+title.toString());
         String t=title.attr("title");
-        String address=title.attr("href");
+        String address=serverAddress+title.attr("href");
         return t+"-"+address;
     }
+
+    @Override
+    public String setNextPageStrategy(String urlContent,int i) {
+        return urlContent + "index_" + i + ".html";
+    }
+
 
     @Override
     public String findImgAddress(Document doc) {

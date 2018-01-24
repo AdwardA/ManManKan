@@ -11,11 +11,14 @@ import org.jsoup.select.Elements;
 public class ParserStrategyManager implements IBaseWebSiteStrategy {
     private IBaseWebSiteStrategy strategy;
     private FengZhiDongManStrategy fengZhiDongManStrategy=new FengZhiDongManStrategy();
-
+    private KuKuDMStrategy kuKuDMStrategy=new KuKuDMStrategy();
     public void setStrategy(String origin) {
         switch (origin){
             case "风之动漫":
                 strategy=fengZhiDongManStrategy;
+                break;
+            case "kuku动漫":
+                strategy=kuKuDMStrategy;
                 break;
         }
 
@@ -27,8 +30,13 @@ public class ParserStrategyManager implements IBaseWebSiteStrategy {
     }
 
     @Override
-    public String getContentTitleAddress(Element title) {
-        return strategy.getContentTitleAddress(title);
+    public String getContentTitleAddress(String serverAddress,Element title) {
+        return strategy.getContentTitleAddress(serverAddress, title);
+    }
+
+    @Override
+    public String setNextPageStrategy(String urlContent, int i) {
+        return strategy.setNextPageStrategy(urlContent,i);
     }
 
     @Override

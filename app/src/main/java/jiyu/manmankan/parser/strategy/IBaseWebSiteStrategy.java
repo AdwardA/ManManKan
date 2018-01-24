@@ -10,6 +10,7 @@ import org.jsoup.select.Elements;
 
 public interface IBaseWebSiteStrategy {
     Elements getContentTitles(Document doc);
-    String getContentTitleAddress(Element title);
+    String getContentTitleAddress(String serverAddress,Element title);
+    String setNextPageStrategy(String urlContent, int i);
     String findImgAddress(Document doc);
 }

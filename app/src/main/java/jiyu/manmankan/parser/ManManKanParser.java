@@ -41,6 +41,11 @@ public  class ManManKanParser{
             super.getImgAddress(urlContent,callBack);
         }
 
+        @Override
+        String setNextPageStrategy(String urlContent, int i) {
+            return strategyManager.setNextPageStrategy(urlContent,i);
+        }
+
 
         @Override//获取漫画章节的标题标签
         Elements getContentTitles(Document doc) {
@@ -48,8 +53,8 @@ public  class ManManKanParser{
         }
 
         @Override//获取漫画标题和地址，中间用“-”分分隔
-        String getContentTitleAddress(Element title) {
-            return strategyManager.getContentTitleAddress(title);
+        String getContentTitleAddress(String serverAddress,Element title) {
+            return strategyManager.getContentTitleAddress(serverAddress,title);
         }
 
         @Override//获取图片的地址
