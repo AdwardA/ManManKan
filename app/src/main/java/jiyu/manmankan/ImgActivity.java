@@ -8,21 +8,15 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 
-import com.raizlabs.android.dbflow.sql.language.SQLite;
-
 import java.io.File;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import jiyu.manmankan.adapter.PageAdapterImg;
-import jiyu.manmankan.data.DBTDownload;
-import jiyu.manmankan.data.DBTDownload_Table;
 import jiyu.manmankan.entity.CartoonType;
 import jiyu.manmankan.entity.LocalCartoonType;
-import jiyu.manmankan.parser.IBaseParser;
 import jiyu.manmankan.parser.ManManKanParser;
 import jiyu.manmankan.utils.FileUtils;
-import jiyu.manmankan.utils.ToastUtils;
 
 public class ImgActivity extends AppCompatActivity {
 
@@ -60,18 +54,10 @@ public class ImgActivity extends AppCompatActivity {
         }else {
             ManManKanParser.builder()
                     .setCartoonType(cartoonType)
-                    .getImgAddress(contentAddress, new IBaseParser.onAddressCallBack() {
-                        @Override
-                        public void getAddress(final String[] address) {
-                            runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    PageAdapterImg adapter=new PageAdapterImg(address,ImgActivity.this);
-                                    imgViewPage.setAdapter(adapter);
-                                }
-                            });
-                        }
-                    });
+                    .getImgAddress(contentAddress, imgAddress -> runOnUiThread(() -> {
+                        PageAdapterImg adapter=new PageAdapterImg(imgAddress,ImgActivity.this);
+                        imgViewPage.setAdapter(adapter);
+                    }));
         }
 
     }

@@ -10,7 +10,6 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
@@ -22,8 +21,6 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.tbruyelle.rxpermissions2.RxPermissions;
 
-import org.json.JSONException;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import cn.bmob.v3.Bmob;
@@ -31,7 +28,7 @@ import jiyu.manmankan.fragment.DownloadFragment;
 import jiyu.manmankan.fragment.MainContentFragment;
 import jiyu.manmankan.utils.QQUtils;
 
-public class MainActivity extends AppCompatActivity
+public class MainActivity extends BaseActivity
         implements NavigationView.OnNavigationItemSelectedListener,SwipeRefreshLayout.OnRefreshListener{
 
     @BindView(R.id.drawer_layout)
@@ -71,12 +68,7 @@ public class MainActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
         View view = navigationView.getHeaderView(0);
         imgAvator=view.findViewById(R.id.imageView);
-        imgAvator.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                qqUtils.login();
-            }
-        });
+        imgAvator.setOnClickListener(view1 -> qqUtils.login());
         textUserName = view.findViewById(R.id.user_name);
         setFragment(0);
 //        swipeRefreshLayout.setRefreshing(true);
@@ -186,6 +178,12 @@ public class MainActivity extends AppCompatActivity
     public void setOnRefreshListener(onRefreshListener listener){
         this.refreshListener=listener;
     }
+
+    @Override
+    protected Object getClassName() {
+        return this;
+    }
+
     public interface onRefreshListener{
         void refresh(SwipeRefreshLayout swipeRefreshLayout);
     }

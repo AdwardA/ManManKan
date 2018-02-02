@@ -9,7 +9,6 @@ import org.jsoup.select.Elements;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -126,7 +125,7 @@ public abstract class IBaseParser {
     }
 
     public interface onAddressCallBack {
-        void getAddress(String[] address);
+        void getAddress(String[] imgAddress);
     }
 
 

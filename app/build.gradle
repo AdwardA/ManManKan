@@ -7,7 +7,7 @@ android {
         config {
             keyAlias 'jiyu'
             keyPassword '445566'
-            storeFile file('F:/我的坚果云/Android/jiyu.jks')
+            storeFile file('E:/keystore/jiyu.jks')
             storePassword '445566'
         }
     }
@@ -99,7 +99,6 @@ static def getSelfDefinedVersion(type) {
     Process process = "git rev-list --count HEAD".execute()
     process.waitFor()
     int cccc = process.getText().toInteger()
-    cccc=21
     if ("code" == type) {
         cccc
     } else if ("name" == type) {
@@ -107,7 +106,7 @@ static def getSelfDefinedVersion(type) {
         process = "git describe --always".execute()
         process.waitFor()
         String sha1 = process.getText().trim()
-        "$aa.$bb.$cccc"
+        "$aa.$cccc.$bb"
     }
 }
 

@@ -3,7 +3,6 @@ package jiyu.manmankan.fragment;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -58,33 +57,25 @@ public class MainContentFragment extends BaseFragment {
 
     @Override
     protected MainActivity.onRefreshListener getOnRefreshListener() {
-        return new MainActivity.onRefreshListener() {
-            @Override
-            public void refresh(final SwipeRefreshLayout swipeRefreshLayout) {
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        BmobQuery<CartoonType> query = new BmobQuery<CartoonType>();
-                        query.setCachePolicy(BmobQuery.CachePolicy.NETWORK_ELSE_CACHE);
-                        query.findObjects(new FindListener<CartoonType>() {
-                            @Override
-                            public void done(List<CartoonType> list, BmobException e) {
-                                swipeRefreshLayout.setRefreshing(false);
-                                if (e == null) {
-                                    Log.i("tag", "done: " + list.size() + "ge");
-                                    RecycleViewAdapterMain adapter = new RecycleViewAdapterMain(
-                                            getContext(), R.layout.item_recycleview_main_cartoon, list);
-                                    recyclerView.setAdapter(adapter);
-                                    recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
-                                } else {
-                                    Log.i("tag", "done: fail:" + e.getMessage());
-                                }
-                            }
-                        });
+        return swipeRefreshLayout -> new Thread(() -> {
+            BmobQuery<CartoonType> query = new BmobQuery<CartoonType>();
+            query.setCachePolicy(BmobQuery.CachePolicy.NETWORK_ELSE_CACHE);
+            query.findObjects(new FindListener<CartoonType>() {
+                @Override
+                public void done(List<CartoonType> list, BmobException e) {
+                    swipeRefreshLayout.setRefreshing(false);
+                    if (e == null) {
+                        Log.i("tag", "done: " + list.size() + "ge");
+                        RecycleViewAdapterMain adapter = new RecycleViewAdapterMain(
+                                getActivity(), R.layout.item_recycleview_main_cartoon, list);
+                        recyclerView.setAdapter(adapter);
+                        recyclerView.setLayoutManager(new GridLayoutManager(getContext(), 2));
+                    } else {
+                        Log.i("tag", "done: fail:" + e.getMessage());
                     }
-                }).start();
-            }
-        };
+                }
+            });
+        }).start();
     }
 
 
